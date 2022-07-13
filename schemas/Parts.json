@@ -1,0 +1,9 @@
+{
+    "$jsonSchema": {
+      "bsonType": "object",
+      "required": [
+        "name",
+        "assinged_worker"
+      ]
+    }
+}

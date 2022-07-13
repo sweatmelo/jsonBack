@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  flaskbackend:
+    image: registry.git-ce.rwth-aachen.de/wzl-mq-ms/forschung-lehre/kombizelle/spp-team-data/backend/flask-backend:latest
+    container_name: am-database-backend
+    volumes:
+      - am-database:/data/db
+    depends_on:
+      - mongodb
+    environment: 
+      - MONGODB_CONNSTRING=mongodb://AzureDiamond:hunter2@mongodb
+      - SERVER=true
+      - DEMO=true
+    ports:
+      - 8505:5000
+    restart: unless-stopped
+
+   
+  mongodb:
+    image: mongo:5.0
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=AzureDiamond
+      - MONGO_INITDB_ROOT_PASSWORD=hunter2
+
+volumes: 
+  am-database:
+    external: true

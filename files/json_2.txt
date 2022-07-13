@@ -1,0 +1,21 @@
+{
+  "_id": {
+    "$oid": "62c7f55fed3f2993ac041036"
+  },
+  "name": "Gear_01",
+  "size": "20",
+  "assinged_worker": {
+    "referenced_collection": "Employees",
+    "object_reference": {
+      "$oid": "62c7f55fed3f2993ac041143"
+    }
+  },
+  "links": [
+    {
+      "$oid": "62c7f55fed3f2993ac041036"
+    },
+    {
+      "$oid": "62c7f55fed3f2993ac041040"
+    }
+  ]
+}

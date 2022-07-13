@@ -1,0 +1,44 @@
+variables:
+  ErrorActionPreference: Stop
+
+stages:
+  - build
+  - push
+  - deploy
+
+Build Container:
+  image: docker:20.10
+  stage: build
+  only:
+    - main
+  tags:
+    - frodo
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY/$CI_PROJECT_PATH .
+
+Push Container:
+  image: docker:20.10
+  stage: push
+  only:
+    - main
+  tags:
+    - frodo
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker push $CI_REGISTRY/$CI_PROJECT_PATH:latest
+
+Deploy Container:
+  stage: deploy
+  only:
+    - main
+  tags:
+    - merry
+  needs: ["Push Container"]
+  script:
+    - cp ./docker-compose.yml $app_path/docker-compose.yml
+    - cd $app_path
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker-compose -p "am-database" stop 
+    - docker-compose -p "am-database" pull
+    - docker-compose -p "am-database" up -d
